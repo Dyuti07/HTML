@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Game est. 2025</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #quiz-box {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      width: 400px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .options button:hover {
+      background-color: #d4e4ff;
+    }
+
+    #next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #result {
+      display: none;
+    }
+
+    #score {
+      font-size: 24px;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="quiz-box">
+    <h1>Quiz Game</h1>
+    <div id="question" class="question"></div>
+    <div id="options" class="options"></div>
+    <button id="next-btn">Next</button>
+
+    <div id="result">
+      <h2>Quiz Completed!</h2>
+      <p>Your Score: <span id="score"></span>/<span id="total"></span></p>
+      <button onclick="location.reload()">Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        options: ["Paris", "Madrid", "Berlin", "Rome"],
+        answer: "Paris"
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Earth", "Mars", "Jupiter", "Saturn"],
+        answer: "Mars"
+      },
+      {
+        question: "Who wrote 'Romeo and Juliet'?",
+        options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Leo Tolstoy"],
+        answer: "William Shakespeare"
+      },
+      {
+        question: "What is 5 x 6?",
+        options: ["11", "30", "56", "65"],
+        answer: "30"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    const totalQuestions = questions.length;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const resultEl = document.getElementById("result");
+    const scoreEl = document.getElementById("score");
+    const totalEl = document.getElementById("total");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => selectAnswer(option);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(selectedOption) {
+      const correct = questions[currentQuestion].answer;
+      if (selectedOption === correct) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < totalQuestions) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById("quiz-box").classList.add("done");
+      questionEl.style.display = "none";
+      optionsEl.style.display = "none";
+      nextBtn.style.display = "none";
+      resultEl.style.display = "block";
+      scoreEl.textContent = score;
+      totalEl.textContent = totalQuestions;
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+      if (currentQuestion < totalQuestions) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    };
+
+    // Start the game
+    showQuestion();
+  </script>
+
+</body>
+</html>
